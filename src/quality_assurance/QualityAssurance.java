@@ -193,13 +193,11 @@ public class QualityAssurance {
 							System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 						}
 					}
-
 				}
 				writer.write(saveResult);
 				writer.close();
 			} catch (IOException e) {
 				System.out.println("File I/O error!");
-
 			}
 		}
 
@@ -225,13 +223,11 @@ public class QualityAssurance {
 							System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 						}
 					}
-
 				}
 				writer.write(saveResult);
 				writer.close();
 			} catch (IOException e) {
 				System.out.println("File I/O error!");
-
 			}
 		}
 
@@ -261,9 +257,7 @@ public class QualityAssurance {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 							}
 							saveResult = saveResult + "\n" + timeLimit + ";" + totalAlive + ";" + totalArea;
-
 						}
-
 						writer.write(saveResult);
 						writer.close();
 					} catch (IOException e) {
