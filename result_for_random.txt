@@ -1,0 +1,13 @@
+Results
+Total centers alive at time t = 500.0 are 180
+Total area at time t = 500.0 is 1946273.1975666368
+Total centers alive at time t = 1000.0 are 160
+Total area at time t = 1000.0 is 1711011.8901099125
+Total centers alive at time t = 2000.0 are 109
+Total area at time t = 2000.0 is 1109974.9499957317
+Total centers alive at time t = 4000.0 are 44
+Total area at time t = 4000.0 is 498683.8514602295
+Total centers alive at time t = 8000.0 are 11
+Total area at time t = 8000.0 is 166328.481451658
+Total centers alive at time t = 16000.0 are 4
+Total area at time t = 16000.0 is 87512.20495839728
