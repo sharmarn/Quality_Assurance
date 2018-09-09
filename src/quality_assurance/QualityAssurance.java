@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class QualityAssurance {
 
 	public enum Option {
-		TOTAL_ALIVE_SINGLE, TOTAL_AREA_SINGLE, BOTH_SINGLE, TOTAL_ALIVE_ALL
+		TOTAL_ALIVE, TOTAL_AREA, BOTH
 	}
 
 	/**
@@ -105,8 +105,35 @@ public class QualityAssurance {
 
 	public static void main(String[] args) {
 
-		File inputFile = new File("result_default.ce");
-		File resultFile = new File("result_for_default.csv");
+		String[] fileNames = { "result_default.ce", "result_radius.ce", "result_in_range.ce", "result_osm_id.ce",
+				"result_random.ce" };
+		File resultFile = new File("result_for_all.csv");
+
+		// Construct understandable names for the used heuristics.
+		ArrayList<String> heuristics = new ArrayList<String>();
+
+		int countFiles = 0;
+		for (String fileName : fileNames) {
+			fileName = fileName.replace("result_", "").replace(".ce", "").toUpperCase();
+			heuristics.add(fileName);
+			countFiles++;
+		}
+
+		String stringOfHeuristics = "";
+
+		if (countFiles == 1) {
+			stringOfHeuristics = heuristics.get(0);
+		} else if (countFiles == 2) {
+			stringOfHeuristics = heuristics.get(0) + ";" + heuristics.get(1);
+		} else if (countFiles == 3) {
+			stringOfHeuristics = heuristics.get(0) + ";" + heuristics.get(1) + ";" + heuristics.get(2);
+		} else if (countFiles == 4) {
+			stringOfHeuristics = heuristics.get(0) + ";" + heuristics.get(1) + ";" + heuristics.get(2) + ";"
+					+ heuristics.get(3);
+		} else {
+			stringOfHeuristics = heuristics.get(0) + ";" + heuristics.get(1) + ";" + heuristics.get(2) + ";"
+					+ heuristics.get(3) + ";" + heuristics.get(4);
+		}
 
 		List<Double> valuesList = null;
 
@@ -118,7 +145,7 @@ public class QualityAssurance {
 		final int sumOfCenters = 184;
 
 		// Choose the property, you want to calculate.
-		Option option = Option.BOTH_SINGLE;
+		Option option = Option.TOTAL_AREA;
 
 		// Set the total number of time limits.
 		Scanner input = new Scanner(System.in);
@@ -143,88 +170,108 @@ public class QualityAssurance {
 
 		input.close();
 
-		try {
-			String saveResult = " ";
-			BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
+		// From here on, the options are specified.
+		if (option == Option.TOTAL_ALIVE) {
 
-			if (option == Option.TOTAL_ALIVE_SINGLE) {
-				saveResult = "Total_Alive" + "\n" + "Time_Limit;Total_Alive";
-
-				for (double timeLimit : timeLimits) {
-
-					try {
-						totalAlive = getTotalAlive(inputFile, columnIndexForEliminationTime, " ", timeLimit,
-								valuesList);
-
-						saveResult = saveResult + "\n" + timeLimit + ";" + totalAlive;
-
-					} catch (Exception e) {
-						System.err.println("Da ist was schiefgegangen: " + e.getMessage());
-					}
-				}
-			}
-
-			else if (option == Option.TOTAL_ALIVE_ALL) {
-				saveResult = "Total_Alive" + "\n" + "Time_Limit;Total_Alive";
+			try {
+				String saveResult = "";
+				BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
+				saveResult = "TOTAL_ALIVE" + "\n" + "TIME_LIMIT;" + stringOfHeuristics;
 
 				for (double timeLimit : timeLimits) {
+					saveResult = saveResult + "\n" + timeLimit;
+					for (String fileName : fileNames) {
+						File inputFile = new File(fileName);
 
-					try {
-						totalAlive = getTotalAlive(inputFile, columnIndexForEliminationTime, " ", timeLimit,
-								valuesList);
+						try {
+							totalAlive = getTotalAlive(inputFile, columnIndexForEliminationTime, " ", timeLimit,
+									valuesList);
 
-						saveResult = saveResult + "\n" + timeLimit + ";" + totalAlive;
+							saveResult = saveResult + ";" + totalAlive;
 
-					} catch (Exception e) {
-						System.err.println("Da ist was schiefgegangen: " + e.getMessage());
+						} catch (Exception e) {
+							System.err.println("Da ist was schiefgegangen: " + e.getMessage());
+						}
 					}
-				}
-			}
 
-			else if (option == Option.TOTAL_AREA_SINGLE) {
-				saveResult = "Total_Area" + "\n" + "Time_Limit;Total_Area";
+				}
+				writer.write(saveResult);
+				writer.close();
+			} catch (IOException e) {
+				System.out.println("File I/O error!");
+
+			}
+		}
+
+		else if (option == Option.TOTAL_AREA) {
+
+			try {
+				String saveResult = "";
+				BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
+				saveResult = "TOTAL_AREA" + "\n" + "TIME_LIMIT;" + stringOfHeuristics;
 
 				for (double timeLimit : timeLimits) {
+					saveResult = saveResult + "\n" + timeLimit;
+					for (String fileName : fileNames) {
+						File inputFile = new File(fileName);
 
-					try {
-						totalArea = getTotalArea(inputFile, columnIndexForEliminationTime, columnIndexForRadius, " ",
-								timeLimit, valuesList, valuesList, sumOfCenters);
+						try {
+							totalArea = getTotalArea(inputFile, columnIndexForEliminationTime, columnIndexForRadius,
+									" ", timeLimit, valuesList, valuesList, sumOfCenters);
 
-						saveResult = saveResult + "\n" + timeLimit + ";" + totalArea;
+							saveResult = saveResult + ";" + totalArea;
 
-					} catch (Exception e) {
-						System.err.println("Da ist was schiefgegangen: " + e.getMessage());
+						} catch (Exception e) {
+							System.err.println("Da ist was schiefgegangen: " + e.getMessage());
+						}
 					}
-				}
-			}
-
-			else {
-				saveResult = "Results" + "\n" + "Time_Limit;Total_Alive;Total_Area";
-
-				for (double timeLimit : timeLimits) {
-
-					try {
-						totalAlive = getTotalAlive(inputFile, columnIndexForEliminationTime, " ", timeLimit,
-								valuesList);
-					} catch (Exception e) {
-						System.err.println("Da ist was schiefgegangen: " + e.getMessage());
-					}
-
-					try {
-						totalArea = getTotalArea(inputFile, columnIndexForEliminationTime, columnIndexForRadius, " ",
-								timeLimit, valuesList, valuesList, sumOfCenters);
-					} catch (Exception e) {
-						System.err.println("Da ist was schiefgegangen: " + e.getMessage());
-					}
-					saveResult = saveResult + "\n" + timeLimit + ";" + totalAlive + ";" + totalArea;
 
 				}
-			}
+				writer.write(saveResult);
+				writer.close();
+			} catch (IOException e) {
+				System.out.println("File I/O error!");
 
-			writer.write(saveResult);
-			writer.close();
-		} catch (IOException e) {
-			System.out.println("File I/O error!");
+			}
+		}
+
+		else {
+			if (fileNames.length == 1) {
+				for (String fileName : fileNames) {
+					File inputFile = new File(fileName);
+
+					try {
+						String saveResult = "";
+						BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
+						saveResult = "TOTAL_ALIVE AND TOTAL_AREA" + "\n" + "TIME_LIMIT;TOTAL_ALIVE;TOTAL_AREA";
+
+						for (double timeLimit : timeLimits) {
+
+							try {
+								totalAlive = getTotalAlive(inputFile, columnIndexForEliminationTime, " ", timeLimit,
+										valuesList);
+							} catch (Exception e) {
+								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
+							}
+
+							try {
+								totalArea = getTotalArea(inputFile, columnIndexForEliminationTime, columnIndexForRadius,
+										" ", timeLimit, valuesList, valuesList, sumOfCenters);
+							} catch (Exception e) {
+								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
+							}
+							saveResult = saveResult + "\n" + timeLimit + ";" + totalAlive + ";" + totalArea;
+
+						}
+
+						writer.write(saveResult);
+						writer.close();
+					} catch (IOException e) {
+						System.out.println("File I/O error!");
+					}
+				}
+			} else
+				System.out.println("Error: More than one file !");
 		}
 	}
 }
