@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class QualityAssurance {
 
 	public enum Option {
-		TOTAL_ALIVE, TOTAL_AREA, BOTH
+		TOTAL_ALIVE_SINGLE, TOTAL_AREA_SINGLE, BOTH_SINGLE, TOTAL_ALIVE_ALL
 	}
 
 	/**
@@ -105,8 +105,8 @@ public class QualityAssurance {
 
 	public static void main(String[] args) {
 
-		File inputFile = new File("result_in_range.ce");
-		File resultFile = new File("result_for_in_range.csv");
+		File inputFile = new File("result_default.ce");
+		File resultFile = new File("result_for_default.csv");
 
 		List<Double> valuesList = null;
 
@@ -118,7 +118,7 @@ public class QualityAssurance {
 		final int sumOfCenters = 184;
 
 		// Choose the property, you want to calculate.
-		Option option = Option.BOTH;
+		Option option = Option.BOTH_SINGLE;
 
 		// Set the total number of time limits.
 		Scanner input = new Scanner(System.in);
@@ -133,7 +133,7 @@ public class QualityAssurance {
 
 			System.out.println("Please enter the " + count + "." + " time limit.");
 			timeLimits[i] = input.nextDouble();
-			if (i > 0 && timeLimits[i] == timeLimits[i - 1]) {
+			if (i > 0 && timeLimits[i] <= timeLimits[i - 1]) {
 				System.out.println("Time limit already exists.");
 				i--;
 			} else {
@@ -144,25 +144,45 @@ public class QualityAssurance {
 		input.close();
 
 		try {
-			String saveResult = "Results" + "\n" + "Time_Limit;Total_Alive;Total_Radius";
+			String saveResult = " ";
 			BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
 
-			if (option == Option.TOTAL_ALIVE) {
+			if (option == Option.TOTAL_ALIVE_SINGLE) {
+				saveResult = "Total_Alive" + "\n" + "Time_Limit;Total_Alive";
 
 				for (double timeLimit : timeLimits) {
 
 					try {
 						totalAlive = getTotalAlive(inputFile, columnIndexForEliminationTime, " ", timeLimit,
 								valuesList);
-						saveResult = saveResult + "\n" + "Total centers alive at time t = " + +timeLimit + " are "
-								+ Integer.toString(totalAlive);
+
+						saveResult = saveResult + "\n" + timeLimit + ";" + totalAlive;
+
 					} catch (Exception e) {
 						System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 					}
 				}
 			}
 
-			else if (option == Option.TOTAL_AREA) {
+			else if (option == Option.TOTAL_ALIVE_ALL) {
+				saveResult = "Total_Alive" + "\n" + "Time_Limit;Total_Alive";
+
+				for (double timeLimit : timeLimits) {
+
+					try {
+						totalAlive = getTotalAlive(inputFile, columnIndexForEliminationTime, " ", timeLimit,
+								valuesList);
+
+						saveResult = saveResult + "\n" + timeLimit + ";" + totalAlive;
+
+					} catch (Exception e) {
+						System.err.println("Da ist was schiefgegangen: " + e.getMessage());
+					}
+				}
+			}
+
+			else if (option == Option.TOTAL_AREA_SINGLE) {
+				saveResult = "Total_Area" + "\n" + "Time_Limit;Total_Area";
 
 				for (double timeLimit : timeLimits) {
 
@@ -170,8 +190,8 @@ public class QualityAssurance {
 						totalArea = getTotalArea(inputFile, columnIndexForEliminationTime, columnIndexForRadius, " ",
 								timeLimit, valuesList, valuesList, sumOfCenters);
 
-						saveResult = saveResult + "\n" + "Total area at time t = " + timeLimit + " is "
-								+ Double.toString(totalArea);
+						saveResult = saveResult + "\n" + timeLimit + ";" + totalArea;
+
 					} catch (Exception e) {
 						System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 					}
@@ -179,6 +199,7 @@ public class QualityAssurance {
 			}
 
 			else {
+				saveResult = "Results" + "\n" + "Time_Limit;Total_Alive;Total_Area";
 
 				for (double timeLimit : timeLimits) {
 
