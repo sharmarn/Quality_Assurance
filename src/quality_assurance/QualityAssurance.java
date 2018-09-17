@@ -109,30 +109,26 @@ public class QualityAssurance {
 				"result_random.ce" };
 		File resultFile = new File("result_for_all.csv");
 
+		// Choose the property, you want to calculate.
+		Option option = Option.TOTAL_AREA;
+
 		// Construct understandable names for the used heuristics.
 		ArrayList<String> heuristics = new ArrayList<String>();
 
-		int countFiles = 0;
 		for (String fileName : fileNames) {
 			fileName = fileName.replace("result_", "").replace(".ce", "").toUpperCase();
 			heuristics.add(fileName);
-			countFiles++;
 		}
 
+		// Construct the header of the used heuristics for the .csv file.
 		String stringOfHeuristics = "";
 
-		if (countFiles == 1) {
-			stringOfHeuristics = heuristics.get(0);
-		} else if (countFiles == 2) {
-			stringOfHeuristics = heuristics.get(0) + ";" + heuristics.get(1);
-		} else if (countFiles == 3) {
-			stringOfHeuristics = heuristics.get(0) + ";" + heuristics.get(1) + ";" + heuristics.get(2);
-		} else if (countFiles == 4) {
-			stringOfHeuristics = heuristics.get(0) + ";" + heuristics.get(1) + ";" + heuristics.get(2) + ";"
-					+ heuristics.get(3);
-		} else {
-			stringOfHeuristics = heuristics.get(0) + ";" + heuristics.get(1) + ";" + heuristics.get(2) + ";"
-					+ heuristics.get(3) + ";" + heuristics.get(4);
+		for (int i = 0; i < heuristics.size(); i++) {
+			if (i < heuristics.size() - 1) {
+				stringOfHeuristics += heuristics.get(i) + ";";
+			} else {
+				stringOfHeuristics += heuristics.get(i);
+			}
 		}
 
 		List<Double> valuesList = null;
@@ -143,9 +139,6 @@ public class QualityAssurance {
 		double totalArea = 0.0;
 
 		final int sumOfCenters = 184;
-
-		// Choose the property, you want to calculate.
-		Option option = Option.TOTAL_AREA;
 
 		// Set the total number of time limits.
 		Scanner input = new Scanner(System.in);
@@ -161,7 +154,7 @@ public class QualityAssurance {
 			System.out.println("Please enter the " + count + "." + " time limit.");
 			timeLimits[i] = input.nextDouble();
 			if (i > 0 && timeLimits[i] <= timeLimits[i - 1]) {
-				System.out.println("Time limit already exists.");
+				System.out.println("Please enter a greater time limit.");
 				i--;
 			} else {
 				count++;
@@ -196,6 +189,7 @@ public class QualityAssurance {
 				}
 				writer.write(saveResult);
 				writer.close();
+				System.out.println("Calculation of total alive has been finished.");
 			} catch (IOException e) {
 				System.out.println("File I/O error!");
 			}
@@ -226,6 +220,7 @@ public class QualityAssurance {
 				}
 				writer.write(saveResult);
 				writer.close();
+				System.out.println("Calculation of total area has been finished.");
 			} catch (IOException e) {
 				System.out.println("File I/O error!");
 			}
@@ -260,6 +255,7 @@ public class QualityAssurance {
 						}
 						writer.write(saveResult);
 						writer.close();
+						System.out.println("Calculation of total alive and total area has been finished.");
 					} catch (IOException e) {
 						System.out.println("File I/O error!");
 					}
