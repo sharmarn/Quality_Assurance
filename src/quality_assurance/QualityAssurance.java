@@ -107,10 +107,10 @@ public class QualityAssurance {
 
 		String[] fileNames = { "result_default.ce", "result_radius.ce", "result_in_range.ce", "result_osm_id.ce",
 				"result_random.ce" };
-		File resultFile = new File("result_for_all.csv");
+		File resultFile = new File("result_for_total_alive.csv");
 
 		// Choose the property, you want to calculate.
-		Option option = Option.TOTAL_AREA;
+		Option option = Option.TOTAL_ALIVE;
 
 		// Construct understandable names for the used heuristics.
 		ArrayList<String> heuristics = new ArrayList<String>();
