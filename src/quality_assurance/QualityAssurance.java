@@ -70,6 +70,45 @@ public class QualityAssurance {
 		return valuesList;
 	}
 
+	private static List<Double> loadTimeLimitsFromColumn(File file, int columnIndex, String delimiter, int sumOfCentres)
+			throws IOException, NumberFormatException {
+
+		List<Double> valuesList = new ArrayList<>();
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line = null;
+		int lineCounter = 1;
+
+		// Skip first two lines.
+		for (int i = 0; i < 2; i++) {
+			reader.readLine();
+		}
+
+		// Read line by line.
+		while ((line = reader.readLine()) != null) {
+			lineCounter++;
+			if (lineCounter == 2 || lineCounter == sumOfCentres) {
+				// Check for completeness regarding existing columns.
+				String[] split = line.split(delimiter);
+				if (split.length <= columnIndex) {
+					reader.close();
+					throw new IndexOutOfBoundsException(
+							"In Zeile " + lineCounter + " gibt es keine " + columnIndex + " Spalten!");
+				}
+				double doubleValue = 0.0;
+				try {
+					doubleValue = Double.parseDouble(split[columnIndex]);
+					valuesList.add(doubleValue);
+				} catch (NumberFormatException e) {
+					reader.close();
+					throw new NumberFormatException(e.getMessage());
+				}
+			}
+		}
+		reader.close();
+
+		return valuesList;
+	}
+
 	public static int getTotalAlive(File file, int columnIndexForEliminationTime, String delimiter, double timeLimit,
 			List<Double> eliminationTimeList) throws NumberFormatException, IOException {
 
@@ -143,22 +182,40 @@ public class QualityAssurance {
 		// Set the total number of time limits.
 		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter the maximum number of time limits.");
-		int j = input.nextInt();
-		double[] timeLimits = new double[j];
+		int numberOfTimeLimits = input.nextInt();
+		double[] arrayOfTimeLimits = new double[numberOfTimeLimits + 1];
 
 		int count = 1;
 
-		// Set the time limits.
-		for (int i = 0; i < j; i++) {
+		// Set the time limits, statically.
+//		for (int i = 0; i < numberOfTimeLimits; i++) {
+//
+//			System.out.println("Please enter the " + count + "." + " time limit.");
+//			arrayOfTimeLimits[i] = input.nextDouble();
+//			if (i > 0 && arrayOfTimeLimits[i] <= arrayOfTimeLimits[i - 1]) {
+//				System.out.println("Please enter a greater time limit.");
+//				i--;
+//			} else {
+//				count++;
+//			}
+//		}
 
-			System.out.println("Please enter the " + count + "." + " time limit.");
-			timeLimits[i] = input.nextDouble();
-			if (i > 0 && timeLimits[i] <= timeLimits[i - 1]) {
-				System.out.println("Please enter a greater time limit.");
-				i--;
-			} else {
-				count++;
+		File inputFileForTimeLimits = new File("result_default.ce");
+
+		// Get time limits, dynamically.
+		try {
+			List<Double> timeLimitsList = loadTimeLimitsFromColumn(inputFileForTimeLimits,
+					columnIndexForEliminationTime, " ", sumOfCenters);
+			double intervall = (timeLimitsList.get(1) - timeLimitsList.get(0)) / numberOfTimeLimits;
+			for (int i = 1; i <= numberOfTimeLimits; i++) {
+				double timeLimit = intervall * i;
+				System.out.println(timeLimit);
+				arrayOfTimeLimits[i] = timeLimit;
 			}
+		} catch (NumberFormatException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 
 		input.close();
@@ -171,7 +228,7 @@ public class QualityAssurance {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
 				saveResult = "TOTAL_ALIVE" + "\n" + "TIME_LIMIT;" + stringOfHeuristics;
 
-				for (double timeLimit : timeLimits) {
+				for (double timeLimit : arrayOfTimeLimits) {
 					saveResult = saveResult + "\n" + timeLimit;
 					for (String fileName : fileNames) {
 						File inputFile = new File(fileName);
@@ -202,7 +259,7 @@ public class QualityAssurance {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
 				saveResult = "TOTAL_AREA" + "\n" + "TIME_LIMIT;" + stringOfHeuristics;
 
-				for (double timeLimit : timeLimits) {
+				for (double timeLimit : arrayOfTimeLimits) {
 					saveResult = saveResult + "\n" + timeLimit;
 					for (String fileName : fileNames) {
 						File inputFile = new File(fileName);
@@ -236,7 +293,7 @@ public class QualityAssurance {
 						BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
 						saveResult = "TOTAL_ALIVE AND TOTAL_AREA" + "\n" + "TIME_LIMIT;TOTAL_ALIVE;TOTAL_AREA";
 
-						for (double timeLimit : timeLimits) {
+						for (double timeLimit : arrayOfTimeLimits) {
 
 							try {
 								totalAlive = getTotalAlive(inputFile, columnIndexForEliminationTime, " ", timeLimit,
