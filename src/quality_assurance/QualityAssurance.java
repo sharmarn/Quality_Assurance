@@ -148,6 +148,9 @@ public class QualityAssurance {
 				"result_random.ce" };
 		File resultFile = new File("result_for_total_alive.csv");
 
+		// TODO:
+		final int sumOfCenters = 184;
+
 		// Choose the property, you want to calculate.
 		Option option = Option.TOTAL_ALIVE;
 
@@ -177,28 +180,11 @@ public class QualityAssurance {
 		int totalAlive = 0;
 		double totalArea = 0.0;
 
-		final int sumOfCenters = 184;
-
 		// Set the total number of time limits.
 		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter the maximum number of time limits.");
 		int numberOfTimeLimits = input.nextInt();
 		double[] arrayOfTimeLimits = new double[numberOfTimeLimits + 1];
-
-		int count = 1;
-
-		// Set the time limits, statically.
-//		for (int i = 0; i < numberOfTimeLimits; i++) {
-//
-//			System.out.println("Please enter the " + count + "." + " time limit.");
-//			arrayOfTimeLimits[i] = input.nextDouble();
-//			if (i > 0 && arrayOfTimeLimits[i] <= arrayOfTimeLimits[i - 1]) {
-//				System.out.println("Please enter a greater time limit.");
-//				i--;
-//			} else {
-//				count++;
-//			}
-//		}
 
 		File inputFileForTimeLimits = new File("result_default.ce");
 
@@ -209,7 +195,6 @@ public class QualityAssurance {
 			double intervall = (timeLimitsList.get(1) - timeLimitsList.get(0)) / numberOfTimeLimits;
 			for (int i = 1; i <= numberOfTimeLimits; i++) {
 				double timeLimit = intervall * i;
-				System.out.println(timeLimit);
 				arrayOfTimeLimits[i] = timeLimit;
 			}
 		} catch (NumberFormatException e1) {
