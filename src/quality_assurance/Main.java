@@ -22,10 +22,10 @@ public class Main {
 				"result_random.ce" };
 
 		// Set the total number of centers.
-		final int sumOfCenters = 184;
+		final int sumOfCenters = 107368;
 
 		// Choose the property, you want to calculate.
-		Option option = Option.TOTAL_AREA;
+		Option option = Option.TOTAL_ALIVE;
 
 		// Set the file, you want to get the time intervals from.
 		File inputFileForTimeLimitIntervals = new File("result_default.ce");
