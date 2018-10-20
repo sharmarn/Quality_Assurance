@@ -76,7 +76,7 @@ public class QualityAssurance {
 	 * @throws NumberFormatException
 	 */
 	public static List<Double> loadFirstAndSecondLastEliminationTimesFromColumn(File file, int columnIndex,
-			String delimiter, int sumOfCentres) throws IOException, NumberFormatException {
+			String delimiter, int sumOfCenters) throws IOException, NumberFormatException {
 
 		List<Double> valuesList = new ArrayList<>();
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -91,7 +91,7 @@ public class QualityAssurance {
 		// Read line by line.
 		while ((line = reader.readLine()) != null) {
 			lineCounter++;
-			if (lineCounter == 2 || lineCounter == sumOfCentres) {
+			if (lineCounter == 2 || lineCounter == sumOfCenters) {
 				// Check for completeness regarding existing columns.
 				String[] split = line.split(delimiter);
 				if (split.length <= columnIndex) {

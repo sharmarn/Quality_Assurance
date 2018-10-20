@@ -18,17 +18,16 @@ public class Main {
 
 		// ################## PROPERTY SETTINGS - BEGIN ##################
 
-		String[] fileNames = { "result_default.ce", "result_radius.ce", "result_in_range.ce", "result_osm_id.ce",
-				"result_random.ce" };
+		String[] fileNames = { "default.ce", "radius.ce", "in_range.ce", "osm_id.ce", "random.ce" };
 
 		// Set the total number of centers.
-		final int sumOfCenters = 107368;
+		final int sumOfCenters = 4294;
 
 		// Choose the property, you want to calculate.
-		Option option = Option.TOTAL_ALIVE;
+		Option option = Option.TOTAL_AREA;
 
 		// Set the file, you want to get the time intervals from.
-		File inputFileForTimeLimitIntervals = new File("result_default.ce");
+		File inputFileForTimeLimitIntervals = new File("default.ce");
 
 		// ################## PROPERTY SETTINGS - END ##################
 
@@ -36,7 +35,7 @@ public class Main {
 		ArrayList<String> heuristics = new ArrayList<String>();
 
 		for (String fileName : fileNames) {
-			fileName = fileName.replace("result_", "").replace(".ce", "").toUpperCase();
+			fileName = fileName.replace(".ce", "").toLowerCase();
 			heuristics.add(fileName);
 		}
 
@@ -90,7 +89,7 @@ public class Main {
 			try {
 				String saveResult = "";
 				BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
-				saveResult = "TIME_LIMIT;" + stringOfHeuristics;
+				saveResult = "time_limit;" + stringOfHeuristics;
 
 				for (double timeLimit : arrayOfTimeLimits) {
 					saveResult = saveResult + "\n" + timeLimit;
@@ -122,7 +121,7 @@ public class Main {
 			try {
 				String saveResult = "";
 				BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
-				saveResult = "TIME_LIMIT;" + stringOfHeuristics;
+				saveResult = "time_limit;" + stringOfHeuristics;
 
 				for (double timeLimit : arrayOfTimeLimits) {
 					saveResult = saveResult + "\n" + timeLimit;
@@ -157,7 +156,7 @@ public class Main {
 					try {
 						String saveResult = "";
 						BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
-						saveResult = "TIME_LIMIT;TOTAL_ALIVE;TOTAL_AREA";
+						saveResult = "time_limit;total_alive;total_area";
 
 						for (double timeLimit : arrayOfTimeLimits) {
 
