@@ -20,14 +20,11 @@ public class Main {
 
 		String[] fileNames = { "default.ce", "radius.ce", "in_range.ce", "osm_id.ce", "random.ce" };
 
-		// Set the total number of centers.
-		final int sumOfCenters = 4294;
-
-		// Choose the property, you want to calculate.
-		Option option = Option.TOTAL_AREA;
-
 		// Set the file, you want to get the time intervals from.
 		File inputFileForTimeLimitIntervals = new File("default.ce");
+
+		// Choose the property, you want to calculate.
+		Option option = Option.TOTAL_ALIVE;
 
 		// ################## PROPERTY SETTINGS - END ##################
 
@@ -57,22 +54,34 @@ public class Main {
 		int totalAlive = 0;
 		double totalArea = 0.0;
 
-		// Set the total number of time limits.
+		// Set the total number of time intervals.
 		Scanner input = new Scanner(System.in);
-		System.out.println("Please enter the maximum number of time limits.");
-		int numberOfTimeLimits = input.nextInt();
+		System.out.println("Please enter the maximum number of time intervals.");
+		int numberOfTimeIntervals = input.nextInt();
 
 		// Initialize an array for keeping the intervals of the time limits.
-		double[] arrayOfTimeLimits = new double[numberOfTimeLimits + 1];
+		double[] arrayOfTimeIntervals = new double[numberOfTimeIntervals + 1];
+
+		// Get the total number of centers.
+		int sumOfCenters = 0;
+
+		try {
+			sumOfCenters = QualityAssurance.getSumOfCenters(inputFileForTimeLimitIntervals);
+			System.out.println(sumOfCenters);
+		} catch (NumberFormatException e2) {
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
 
 		// Get time limits in intervals.
 		try {
-			List<Double> timeLimitsList = QualityAssurance.loadFirstAndSecondLastEliminationTimesFromColumn(
+			List<Double> timeIntervalsList = QualityAssurance.loadFirstAndSecondLastEliminationTimesFromColumn(
 					inputFileForTimeLimitIntervals, columnIndexForEliminationTime, " ", sumOfCenters);
-			double intervall = (timeLimitsList.get(1) - timeLimitsList.get(0)) / numberOfTimeLimits;
-			for (int i = 0; i < numberOfTimeLimits + 1; i++) {
-				double timeLimit = intervall * i;
-				arrayOfTimeLimits[i] = timeLimit;
+			double interval = (timeIntervalsList.get(1) - timeIntervalsList.get(0)) / numberOfTimeIntervals;
+			for (int i = 0; i < numberOfTimeIntervals + 1; i++) {
+				double timeInterval = interval * i;
+				arrayOfTimeIntervals[i] = timeInterval;
 			}
 		} catch (NumberFormatException e1) {
 			e1.printStackTrace();
@@ -82,7 +91,8 @@ public class Main {
 
 		input.close();
 
-		// From here on, the options are specified.
+		// ################## OPTIONS - BEGIN ##################
+
 		if (option == Option.TOTAL_ALIVE) {
 			File resultFile = new File("result_for_total_alive.csv");
 
@@ -91,14 +101,14 @@ public class Main {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
 				saveResult = "time_limit;" + stringOfHeuristics;
 
-				for (double timeLimit : arrayOfTimeLimits) {
-					saveResult = saveResult + "\n" + timeLimit;
+				for (double timeInterval : arrayOfTimeIntervals) {
+					saveResult = saveResult + "\n" + timeInterval;
 					for (String fileName : fileNames) {
 						File inputFile = new File(fileName);
 
 						try {
 							totalAlive = QualityAssurance.getTotalAlive(inputFile, columnIndexForEliminationTime, " ",
-									timeLimit, valuesList);
+									timeInterval, valuesList);
 
 							saveResult = saveResult + ";" + totalAlive;
 
@@ -123,14 +133,14 @@ public class Main {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
 				saveResult = "time_limit;" + stringOfHeuristics;
 
-				for (double timeLimit : arrayOfTimeLimits) {
-					saveResult = saveResult + "\n" + timeLimit;
+				for (double timeInterval : arrayOfTimeIntervals) {
+					saveResult = saveResult + "\n" + timeInterval;
 					for (String fileName : fileNames) {
 						File inputFile = new File(fileName);
 
 						try {
 							totalArea = QualityAssurance.getTotalArea(inputFile, columnIndexForEliminationTime,
-									columnIndexForRadius, " ", timeLimit, valuesList, valuesList, sumOfCenters);
+									columnIndexForRadius, " ", timeInterval, valuesList, valuesList, sumOfCenters);
 
 							saveResult = saveResult + ";" + totalArea;
 
@@ -158,22 +168,22 @@ public class Main {
 						BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
 						saveResult = "time_limit;total_alive;total_area";
 
-						for (double timeLimit : arrayOfTimeLimits) {
+						for (double timeInterval : arrayOfTimeIntervals) {
 
 							try {
 								totalAlive = QualityAssurance.getTotalAlive(inputFile, columnIndexForEliminationTime,
-										" ", timeLimit, valuesList);
+										" ", timeInterval, valuesList);
 							} catch (Exception e) {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 							}
 
 							try {
 								totalArea = QualityAssurance.getTotalArea(inputFile, columnIndexForEliminationTime,
-										columnIndexForRadius, " ", timeLimit, valuesList, valuesList, sumOfCenters);
+										columnIndexForRadius, " ", timeInterval, valuesList, valuesList, sumOfCenters);
 							} catch (Exception e) {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 							}
-							saveResult = saveResult + "\n" + timeLimit + ";" + totalAlive + ";" + totalArea;
+							saveResult = saveResult + "\n" + timeInterval + ";" + totalAlive + ";" + totalArea;
 						}
 						writer.write(saveResult);
 						writer.close();
@@ -185,5 +195,7 @@ public class Main {
 			} else
 				System.out.println("Error: More than one file !");
 		}
+
+		// ################## OPTIONS - END ##################
 	}
 }

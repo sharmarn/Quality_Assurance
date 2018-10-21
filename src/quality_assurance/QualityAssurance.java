@@ -64,13 +64,35 @@ public class QualityAssurance {
 	}
 
 	/**
+	 * This method returns the sum of centers, which is given in the first line of
+	 * the input file.
+	 * 
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
+	public static int getSumOfCenters(File file) throws IOException, NumberFormatException {
+
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String firstLine = "";
+
+		firstLine = reader.readLine();
+		int sumOfCenters = Integer.parseInt(firstLine);
+
+		reader.close();
+
+		return sumOfCenters;
+	}
+
+	/**
 	 * This method allows the user to fetch the first and the second last
 	 * elimination time for "building" the intervals.
 	 * 
 	 * @param file
 	 * @param columnIndex
 	 * @param delimiter
-	 * @param sumOfCentres
+	 * @param sumOfCenters
 	 * @return
 	 * @throws IOException
 	 * @throws NumberFormatException
