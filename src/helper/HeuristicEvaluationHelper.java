@@ -14,9 +14,10 @@ import java.io.IOException;
  */
 public class HeuristicEvaluationHelper {
 
-	public static void compareHeuristicsByGettingHighestValue(File file, String evaluationFile, int totalNumberOfColumns,
-			int columnIndexForDefault, int columnIndexForRadius, int columnIndexForInRange, int columnIndexForOsmId,
-			int columnIndexForRandom, String delimiter) throws IOException, NumberFormatException {
+	public static void compareHeuristicsByGettingHighestValue(File file, String evaluationFile,
+			int totalNumberOfColumns, int columnIndexForDefault, int columnIndexForRadius, int columnIndexForInRange,
+			int columnIndexForOsmId, int columnIndexForRandom, String delimiter)
+			throws IOException, NumberFormatException {
 
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		File resultFile = new File(evaluationFile);

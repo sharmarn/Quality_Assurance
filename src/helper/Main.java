@@ -25,9 +25,9 @@ public class Main {
 		final int columnIndexForRandom = 5;
 
 		try {
-			HeuristicEvaluationHelper.compareHeuristicsByGettingHighestValue(inputFile, outputFile, totalNumberOfColumns,
-					columnIndexForDefault, columnIndexForRadius, columnIndexForInRange, columnIndexForOsmId,
-					columnIndexForRandom, ";");
+			HeuristicEvaluationHelper.compareHeuristicsByGettingHighestValue(inputFile, outputFile,
+					totalNumberOfColumns, columnIndexForDefault, columnIndexForRadius, columnIndexForInRange,
+					columnIndexForOsmId, columnIndexForRandom, ";");
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
