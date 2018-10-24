@@ -28,6 +28,7 @@ public class Main {
 			HeuristicEvaluationHelper.compareHeuristicsByGettingHighestValue(inputFile, outputFile,
 					totalNumberOfColumns, columnIndexForDefault, columnIndexForRadius, columnIndexForInRange,
 					columnIndexForOsmId, columnIndexForRandom, ";");
+			System.out.println("Computation completed.");
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

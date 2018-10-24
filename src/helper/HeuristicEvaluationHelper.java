@@ -384,6 +384,5 @@ public class HeuristicEvaluationHelper {
 		reader.close();
 		writer.write(saveResult);
 		writer.close();
-		System.out.println("Computation completed.");
 	}
 }
