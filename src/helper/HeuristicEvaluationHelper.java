@@ -1,4 +1,4 @@
-package comparator;
+package helper;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,13 +8,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * This is solely a helper class for analysing the output files from the
- * Main.java class.
+ * This is solely a helper class for evaluating the total_alive.csv and
+ * total_area.csv files.
  *
  */
-public class Comparator {
+public class HeuristicEvaluationHelper {
 
-	public static void loadValuesFromColumn(File file, String evaluationFile, int totalNumberOfColumns,
+	public static void compareHeuristicsByGettingHighestValue(File file, String evaluationFile, int totalNumberOfColumns,
 			int columnIndexForDefault, int columnIndexForRadius, int columnIndexForInRange, int columnIndexForOsmId,
 			int columnIndexForRandom, String delimiter) throws IOException, NumberFormatException {
 
@@ -46,6 +46,8 @@ public class Comparator {
 				throw new IndexOutOfBoundsException(
 						"In Zeile " + lineCounter + " gibt es keine " + totalNumberOfColumns + " Spalten!");
 			}
+
+			// Fetch the values for time and all the heuristics from the .csv file.
 			double timeLimit = 0.0;
 			double doubleValueOfDefault = 0.0;
 			double doubleValueOfRadius = 0.0;
@@ -60,12 +62,14 @@ public class Comparator {
 				doubleValueOfOsmId = Double.parseDouble(split[columnIndexForOsmId]);
 				doubleValueOfRandom = Double.parseDouble(split[columnIndexForRandom]);
 
+				// Convert double values into integer values.
 				int valueOfDefault = (int) Math.round(doubleValueOfDefault);
 				int valueOfRadius = (int) Math.round(doubleValueOfRadius);
 				int valueOfInRange = (int) Math.round(doubleValueOfInRange);
 				int valueOfOsmId = (int) Math.round(doubleValueOfOsmId);
 				int valueOfRandom = (int) Math.round(doubleValueOfRandom);
 
+				// Look for possibility of only one maximum - BEGIN
 				if (valueOfDefault > valueOfRadius && valueOfDefault > valueOfInRange && valueOfDefault > valueOfOsmId
 						&& valueOfDefault > valueOfRandom) {
 
@@ -101,15 +105,9 @@ public class Comparator {
 							+ ";" + countOsmId + ";" + countRandom++ + "\n";
 				}
 
-				else if (valueOfDefault == valueOfRadius && valueOfDefault == valueOfInRange
-						&& valueOfDefault == valueOfOsmId && valueOfDefault == valueOfRandom
-						&& valueOfRadius == valueOfInRange && valueOfRadius == valueOfOsmId
-						&& valueOfRadius == valueOfRandom && valueOfInRange == valueOfOsmId
-						&& valueOfInRange == valueOfRandom && valueOfOsmId == valueOfRandom) {
+				// Look for possibility of only one maximum - END
 
-					saveResult = saveResult + timeLimit + ";" + countDefault + ";" + countRadius + ";" + countInRange
-							+ ";" + countOsmId + ";" + countRandom + "\n";
-				}
+				// Look for possibility of four max. values - BEGIN
 
 				else if (valueOfDefault == valueOfRadius && valueOfDefault == valueOfInRange
 						&& valueOfDefault == valueOfOsmId && valueOfRadius == valueOfInRange
@@ -160,6 +158,10 @@ public class Comparator {
 					saveResult = saveResult + timeLimit + ";" + countDefault + ";" + countRadius++ + ";"
 							+ countInRange++ + ";" + countOsmId++ + ";" + countRandom++ + "\n";
 				}
+
+				// Look for possibility of four max. values - END
+
+				// Look for possibility of tree max. values - BEGIN
 
 				else if (valueOfDefault == valueOfRadius && valueOfDefault == valueOfInRange
 						&& valueOfRadius == valueOfInRange && valueOfDefault > valueOfOsmId
@@ -261,6 +263,10 @@ public class Comparator {
 							+ ";" + countOsmId++ + ";" + countRandom++ + "\n";
 				}
 
+				// Look for possibility of tree max. values - END
+
+				// Look for possibility of two max. values - BEGIN
+
 				else if (valueOfDefault == valueOfRadius && valueOfDefault > valueOfInRange
 						&& valueOfDefault > valueOfOsmId && valueOfDefault > valueOfRandom
 						&& valueOfRadius > valueOfInRange && valueOfRadius > valueOfOsmId
@@ -350,6 +356,20 @@ public class Comparator {
 							+ ";" + countOsmId++ + ";" + countRandom++ + "\n";
 				}
 
+				// Look for possibility of two max. values - END
+
+				// Else all values are equally great.
+
+				else if (valueOfDefault == valueOfRadius && valueOfDefault == valueOfInRange
+						&& valueOfDefault == valueOfOsmId && valueOfDefault == valueOfRandom
+						&& valueOfRadius == valueOfInRange && valueOfRadius == valueOfOsmId
+						&& valueOfRadius == valueOfRandom && valueOfInRange == valueOfOsmId
+						&& valueOfInRange == valueOfRandom && valueOfOsmId == valueOfRandom) {
+
+					saveResult = saveResult + timeLimit + ";" + countDefault + ";" + countRadius + ";" + countInRange
+							+ ";" + countOsmId + ";" + countRandom + "\n";
+				}
+
 				else {
 
 					saveResult = saveResult + "";
@@ -363,6 +383,6 @@ public class Comparator {
 		reader.close();
 		writer.write(saveResult);
 		writer.close();
-		System.out.println("Done.");
+		System.out.println("Computation completed.");
 	}
 }

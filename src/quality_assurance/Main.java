@@ -26,7 +26,7 @@ public class Main {
 		// Choose the property, you want to calculate.
 		Option option = Option.TOTAL_ALIVE;
 
-		// ################## PROPERTY SETTINGS - END ##################
+		// ################## PROPERTY SETTINGS - END ####################
 
 		// Construct understandable names for the used heuristics.
 		ArrayList<String> heuristics = new ArrayList<String>();
@@ -66,7 +66,7 @@ public class Main {
 		int sumOfCenters = 0;
 
 		try {
-			sumOfCenters = QualityAssurance.getSumOfCenters(inputFileForTimeLimitIntervals);
+			sumOfCenters = HeuristicEvaluation.getSumOfCenters(inputFileForTimeLimitIntervals);
 			System.out.println(sumOfCenters);
 		} catch (NumberFormatException e2) {
 			e2.printStackTrace();
@@ -76,7 +76,7 @@ public class Main {
 
 		// Get time limits in intervals.
 		try {
-			List<Double> timeIntervalsList = QualityAssurance.loadFirstAndSecondLastEliminationTimesFromColumn(
+			List<Double> timeIntervalsList = HeuristicEvaluation.loadFirstAndSecondLastEliminationTimesFromColumn(
 					inputFileForTimeLimitIntervals, columnIndexForEliminationTime, " ", sumOfCenters);
 			double interval = (timeIntervalsList.get(1) - timeIntervalsList.get(0)) / numberOfTimeIntervals;
 			for (int i = 0; i < numberOfTimeIntervals + 1; i++) {
@@ -94,7 +94,7 @@ public class Main {
 		// ################## OPTIONS - BEGIN ##################
 
 		if (option == Option.TOTAL_ALIVE) {
-			File resultFile = new File("result_for_total_alive.csv");
+			File resultFile = new File("total_alive.csv");
 
 			try {
 				String saveResult = "";
@@ -107,7 +107,7 @@ public class Main {
 						File inputFile = new File(fileName);
 
 						try {
-							totalAlive = QualityAssurance.getTotalAlive(inputFile, columnIndexForEliminationTime, " ",
+							totalAlive = HeuristicEvaluation.getTotalAlive(inputFile, columnIndexForEliminationTime, " ",
 									timeInterval, valuesList);
 
 							saveResult = saveResult + ";" + totalAlive;
@@ -126,7 +126,7 @@ public class Main {
 		}
 
 		else if (option == Option.TOTAL_AREA) {
-			File resultFile = new File("result_for_total_area.csv");
+			File resultFile = new File("total_area.csv");
 
 			try {
 				String saveResult = "";
@@ -139,7 +139,7 @@ public class Main {
 						File inputFile = new File(fileName);
 
 						try {
-							totalArea = QualityAssurance.getTotalArea(inputFile, columnIndexForEliminationTime,
+							totalArea = HeuristicEvaluation.getTotalArea(inputFile, columnIndexForEliminationTime,
 									columnIndexForRadius, " ", timeInterval, valuesList, valuesList, sumOfCenters);
 
 							saveResult = saveResult + ";" + totalArea;
@@ -158,7 +158,7 @@ public class Main {
 		}
 
 		else {
-			File resultFile = new File("result_total_alive_and_area.csv");
+			File resultFile = new File("total_alive_and_area.csv");
 			if (fileNames.length == 1) {
 				for (String fileName : fileNames) {
 					File inputFile = new File(fileName);
@@ -171,14 +171,14 @@ public class Main {
 						for (double timeInterval : arrayOfTimeIntervals) {
 
 							try {
-								totalAlive = QualityAssurance.getTotalAlive(inputFile, columnIndexForEliminationTime,
+								totalAlive = HeuristicEvaluation.getTotalAlive(inputFile, columnIndexForEliminationTime,
 										" ", timeInterval, valuesList);
 							} catch (Exception e) {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 							}
 
 							try {
-								totalArea = QualityAssurance.getTotalArea(inputFile, columnIndexForEliminationTime,
+								totalArea = HeuristicEvaluation.getTotalArea(inputFile, columnIndexForEliminationTime,
 										columnIndexForRadius, " ", timeInterval, valuesList, valuesList, sumOfCenters);
 							} catch (Exception e) {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());

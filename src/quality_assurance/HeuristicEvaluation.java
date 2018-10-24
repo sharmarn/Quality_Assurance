@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QualityAssurance {
+public class HeuristicEvaluation {
 
 	/**
 	 * This method allows the user to fetch the specified column of a file.
