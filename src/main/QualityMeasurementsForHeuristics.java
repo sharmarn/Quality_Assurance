@@ -1,4 +1,4 @@
-package quality_assurance;
+package main;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeuristicEvaluation {
+public class QualityMeasurementsForHeuristics {
 
 	/**
 	 * This method allows the user to fetch the specified column of a file.

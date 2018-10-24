@@ -12,7 +12,7 @@ import java.io.IOException;
  * total_area.csv files.
  *
  */
-public class HeuristicEvaluationHelper {
+public class QualityMeasurementsForHeuristicsHelper {
 
 	public static void compareHeuristicsByGettingHighestValue(File file, String evaluationFile,
 			int totalNumberOfColumns, int columnIndexForDefault, int columnIndexForRadius, int columnIndexForInRange,

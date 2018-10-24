@@ -1,4 +1,4 @@
-package quality_assurance;
+package main;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -66,7 +66,7 @@ public class Main {
 		int sumOfCenters = 0;
 
 		try {
-			sumOfCenters = HeuristicEvaluation.getSumOfCenters(inputFileForTimeLimitIntervals);
+			sumOfCenters = QualityMeasurementsForHeuristics.getSumOfCenters(inputFileForTimeLimitIntervals);
 			System.out.println(sumOfCenters);
 		} catch (NumberFormatException e2) {
 			e2.printStackTrace();
@@ -76,7 +76,7 @@ public class Main {
 
 		// Get time limits in intervals.
 		try {
-			List<Double> timeIntervalsList = HeuristicEvaluation.loadFirstAndSecondLastEliminationTimesFromColumn(
+			List<Double> timeIntervalsList = QualityMeasurementsForHeuristics.loadFirstAndSecondLastEliminationTimesFromColumn(
 					inputFileForTimeLimitIntervals, columnIndexForEliminationTime, " ", sumOfCenters);
 			double interval = (timeIntervalsList.get(1) - timeIntervalsList.get(0)) / numberOfTimeIntervals;
 			for (int i = 0; i < numberOfTimeIntervals + 1; i++) {
@@ -107,7 +107,7 @@ public class Main {
 						File inputFile = new File(fileName);
 
 						try {
-							totalAlive = HeuristicEvaluation.getTotalAlive(inputFile, columnIndexForEliminationTime, " ",
+							totalAlive = QualityMeasurementsForHeuristics.getTotalAlive(inputFile, columnIndexForEliminationTime, " ",
 									timeInterval, valuesList);
 
 							saveResult = saveResult + ";" + totalAlive;
@@ -139,7 +139,7 @@ public class Main {
 						File inputFile = new File(fileName);
 
 						try {
-							totalArea = HeuristicEvaluation.getTotalArea(inputFile, columnIndexForEliminationTime,
+							totalArea = QualityMeasurementsForHeuristics.getTotalArea(inputFile, columnIndexForEliminationTime,
 									columnIndexForRadius, " ", timeInterval, valuesList, valuesList, sumOfCenters);
 
 							saveResult = saveResult + ";" + totalArea;
@@ -171,14 +171,14 @@ public class Main {
 						for (double timeInterval : arrayOfTimeIntervals) {
 
 							try {
-								totalAlive = HeuristicEvaluation.getTotalAlive(inputFile, columnIndexForEliminationTime,
+								totalAlive = QualityMeasurementsForHeuristics.getTotalAlive(inputFile, columnIndexForEliminationTime,
 										" ", timeInterval, valuesList);
 							} catch (Exception e) {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 							}
 
 							try {
-								totalArea = HeuristicEvaluation.getTotalArea(inputFile, columnIndexForEliminationTime,
+								totalArea = QualityMeasurementsForHeuristics.getTotalArea(inputFile, columnIndexForEliminationTime,
 										columnIndexForRadius, " ", timeInterval, valuesList, valuesList, sumOfCenters);
 							} catch (Exception e) {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());

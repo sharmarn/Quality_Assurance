@@ -25,7 +25,7 @@ public class Main {
 		final int columnIndexForRandom = 5;
 
 		try {
-			HeuristicEvaluationHelper.compareHeuristicsByGettingHighestValue(inputFile, outputFile,
+			QualityMeasurementsForHeuristicsHelper.compareHeuristicsByGettingHighestValue(inputFile, outputFile,
 					totalNumberOfColumns, columnIndexForDefault, columnIndexForRadius, columnIndexForInRange,
 					columnIndexForOsmId, columnIndexForRandom, ";");
 			System.out.println("Computation completed.");
