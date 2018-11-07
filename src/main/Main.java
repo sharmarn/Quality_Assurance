@@ -18,13 +18,13 @@ public class Main {
 
 		// ################## PROPERTY SETTINGS - BEGIN ##################
 
-		String[] fileNames = { "default.ce", "radius.ce", "in_range.ce", "osm_id.ce", "random.ce" };
+		String[] fileNames = { "default.ce", "radius.ce", "in_range.ce", "random.ce" };
 
 		// Set the file, you want to get the time intervals from.
 		File inputFileForTimeLimitIntervals = new File("default.ce");
 
 		// Choose the property, you want to calculate.
-		Option option = Option.TOTAL_ALIVE;
+		Option option = Option.TOTAL_AREA;
 
 		// ################## PROPERTY SETTINGS - END ####################
 
@@ -76,8 +76,9 @@ public class Main {
 
 		// Get time limits in intervals.
 		try {
-			List<Double> timeIntervalsList = QualityMeasurementsForHeuristics.loadFirstAndSecondLastEliminationTimesFromColumn(
-					inputFileForTimeLimitIntervals, columnIndexForEliminationTime, " ", sumOfCenters);
+			List<Double> timeIntervalsList = QualityMeasurementsForHeuristics
+					.loadFirstAndSecondLastEliminationTimesFromColumn(inputFileForTimeLimitIntervals,
+							columnIndexForEliminationTime, " ", sumOfCenters);
 			double interval = (timeIntervalsList.get(1) - timeIntervalsList.get(0)) / numberOfTimeIntervals;
 			for (int i = 0; i < numberOfTimeIntervals + 1; i++) {
 				double timeInterval = interval * i;
@@ -107,8 +108,8 @@ public class Main {
 						File inputFile = new File(fileName);
 
 						try {
-							totalAlive = QualityMeasurementsForHeuristics.getTotalAlive(inputFile, columnIndexForEliminationTime, " ",
-									timeInterval, valuesList);
+							totalAlive = QualityMeasurementsForHeuristics.getTotalAlive(inputFile,
+									columnIndexForEliminationTime, " ", timeInterval, valuesList);
 
 							saveResult = saveResult + ";" + totalAlive;
 
@@ -139,8 +140,9 @@ public class Main {
 						File inputFile = new File(fileName);
 
 						try {
-							totalArea = QualityMeasurementsForHeuristics.getTotalArea(inputFile, columnIndexForEliminationTime,
-									columnIndexForRadius, " ", timeInterval, valuesList, valuesList, sumOfCenters);
+							totalArea = QualityMeasurementsForHeuristics.getTotalArea(inputFile,
+									columnIndexForEliminationTime, columnIndexForRadius, " ", timeInterval, valuesList,
+									valuesList, sumOfCenters);
 
 							saveResult = saveResult + ";" + totalArea;
 
@@ -171,15 +173,16 @@ public class Main {
 						for (double timeInterval : arrayOfTimeIntervals) {
 
 							try {
-								totalAlive = QualityMeasurementsForHeuristics.getTotalAlive(inputFile, columnIndexForEliminationTime,
-										" ", timeInterval, valuesList);
+								totalAlive = QualityMeasurementsForHeuristics.getTotalAlive(inputFile,
+										columnIndexForEliminationTime, " ", timeInterval, valuesList);
 							} catch (Exception e) {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 							}
 
 							try {
-								totalArea = QualityMeasurementsForHeuristics.getTotalArea(inputFile, columnIndexForEliminationTime,
-										columnIndexForRadius, " ", timeInterval, valuesList, valuesList, sumOfCenters);
+								totalArea = QualityMeasurementsForHeuristics.getTotalArea(inputFile,
+										columnIndexForEliminationTime, columnIndexForRadius, " ", timeInterval,
+										valuesList, valuesList, sumOfCenters);
 							} catch (Exception e) {
 								System.err.println("Da ist was schiefgegangen: " + e.getMessage());
 							}
@@ -196,6 +199,6 @@ public class Main {
 				System.out.println("Error: More than one file !");
 		}
 
-		// ################## OPTIONS - END ##################
+		// ################## OPTIONS - END ####################
 	}
 }

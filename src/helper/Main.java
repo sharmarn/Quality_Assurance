@@ -17,18 +17,17 @@ public class Main {
 
 		// ################## PROPERTY SETTINGS - END ####################
 
-		final int totalNumberOfColumns = 5;
+		final int totalNumberOfColumns = 4;
 		final int columnIndexForDefault = 1;
 		final int columnIndexForRadius = 2;
 		final int columnIndexForInRange = 3;
-		final int columnIndexForOsmId = 4;
-		final int columnIndexForRandom = 5;
+		final int columnIndexForRandom = 4;
 
 		try {
 			QualityMeasurementsForHeuristicsHelper.compareHeuristicsByGettingHighestValue(inputFile, outputFile,
 					totalNumberOfColumns, columnIndexForDefault, columnIndexForRadius, columnIndexForInRange,
-					columnIndexForOsmId, columnIndexForRandom, ";");
-			System.out.println("Computation completed.");
+					columnIndexForRandom, ";");
+			System.out.println("Computation finished.");
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
