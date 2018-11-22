@@ -56,7 +56,7 @@ public class Main {
 
 		// Set the total number of time intervals.
 		Scanner input = new Scanner(System.in);
-		System.out.println("Please enter the maximum number of time intervals.");
+		System.out.println("Please enter the number of time intervals.");
 		int numberOfTimeIntervals = input.nextInt();
 
 		// Initialize an array for keeping the intervals of the time limits.
@@ -67,7 +67,7 @@ public class Main {
 
 		try {
 			sumOfCenters = QualityMeasurementsForHeuristics.getSumOfCenters(inputFileForTimeLimitIntervals);
-			System.out.println(sumOfCenters);
+			System.out.println("Number of centers: " + sumOfCenters);
 		} catch (NumberFormatException e2) {
 			e2.printStackTrace();
 		} catch (IOException e2) {
@@ -120,7 +120,7 @@ public class Main {
 				}
 				writer.write(saveResult);
 				writer.close();
-				System.out.println("Calculation of total alive has been finished.");
+				System.out.println("Calculation of TOTAL ALIVE has been finished.");
 			} catch (IOException e) {
 				System.out.println("File I/O error!");
 			}
@@ -153,7 +153,7 @@ public class Main {
 				}
 				writer.write(saveResult);
 				writer.close();
-				System.out.println("Calculation of total area has been finished.");
+				System.out.println("Calculation of TOTAL AREA has been finished.");
 			} catch (IOException e) {
 				System.out.println("File I/O error!");
 			}
@@ -190,7 +190,7 @@ public class Main {
 						}
 						writer.write(saveResult);
 						writer.close();
-						System.out.println("Calculation of total alive and total area has been finished.");
+						System.out.println("Calculation of TOTAL ALIVE and TOTAL AREA has been finished.");
 					} catch (IOException e) {
 						System.out.println("File I/O error!");
 					}
