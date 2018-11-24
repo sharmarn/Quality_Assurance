@@ -18,7 +18,7 @@ public class Main {
 
 		// ################## PROPERTY SETTINGS - BEGIN ##################
 
-		String[] fileNames = { "default.ce", "radius.ce", "in_range.ce", "random.ce" };
+		String[] fileNames = { "default.ce", "radius.ce", "in_range.ce", "random.ce", "lp_solution.ce" };
 
 		// Set the file, you want to get the time intervals from.
 		File inputFileForTimeLimitIntervals = new File("default.ce");
