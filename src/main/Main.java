@@ -23,7 +23,7 @@ public class Main {
 		// Set the file, you want to get the time intervals from.
 		File inputFileForTimeLimitIntervals = new File("default.ce");
 
-		// Choose the property, you want to calculate.
+		// Choose the quality measurement, you want to calculate.
 		Option option = Option.TOTAL_AREA;
 
 		// ################## PROPERTY SETTINGS - END ####################
