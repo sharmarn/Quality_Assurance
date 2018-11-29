@@ -18,13 +18,15 @@ public class Main {
 
 		// ################## PROPERTY SETTINGS - BEGIN ##################
 
+		// Set the input files (generated outputs by the 'Growing Balls' algorithm) by
+		// their names and endings.
 		String[] fileNames = { "default.ce", "radius.ce", "in_range.ce", "random.ce", "lp_solution.ce" };
 
 		// Set the file, you want to get the time intervals from.
 		File inputFileForTimeLimitIntervals = new File("default.ce");
 
 		// Choose the quality measurement, you want to calculate.
-		Option option = Option.TOTAL_AREA;
+		Option option = Option.TOTAL_ALIVE;
 
 		// ################## PROPERTY SETTINGS - END ####################
 
