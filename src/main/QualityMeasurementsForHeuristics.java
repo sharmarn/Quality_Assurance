@@ -87,7 +87,7 @@ public class QualityMeasurementsForHeuristics {
 
 	/**
 	 * This method allows the user to fetch the first and the second last
-	 * elimination time for "building" the intervals.
+	 * elimination time for constructing the intervals.
 	 * 
 	 * @param file
 	 * @param columnIndex
@@ -113,6 +113,7 @@ public class QualityMeasurementsForHeuristics {
 		// Read line by line.
 		while ((line = reader.readLine()) != null) {
 			lineCounter++;
+			// Get the first and second last elimination times
 			if (lineCounter == 2 || lineCounter == sumOfCenters) {
 				// Check for completeness regarding existing columns.
 				String[] split = line.split(delimiter);
