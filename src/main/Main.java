@@ -192,7 +192,7 @@ public class Main {
 						}
 						writer.write(saveResult);
 						writer.close();
-						System.out.println("Calculation of TOTAL ALIVE and TOTAL AREA has been finished.");
+						System.out.println("Calculations of TOTAL ALIVE and TOTAL AREA have been finished.");
 					} catch (IOException e) {
 						System.out.println("File I/O error!");
 					}
